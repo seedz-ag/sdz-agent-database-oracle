@@ -1,0 +1,22 @@
+{
+    "cnpjOrigemDados": null,
+    "dataCadastro": null,
+    "dataAtualizacao": null,
+    "id": null,
+    "titulo": null,
+    "idFornecedor": null,
+    "nomeFornecedor": null,
+    "dtEmissao": null,
+    "documento": null,
+    "serie": null,
+    "dtVencimentoOriginal": null,
+    "dtVencimentoProrrogado": null,
+    "competencia": null,
+    "vlrBruto": null,
+    "vlrAcrescimos": null,
+    "vlrDesconto": null,
+    "vlrLiquido": null,
+    "parcela": null,
+    "situacao": null,
+    "dtBaixa": null 
+}

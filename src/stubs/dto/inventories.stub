@@ -1,0 +1,16 @@
+{
+    "cnpjOrigemDados": null,
+    "dataAtualizacao": null,
+    "idItem": null,
+    "id": null,
+    "descricaoItem": null,
+    "vlrUnitario": null,
+    "armazem": null,
+    "qtdTotal": null,
+    "vlrTotal": null,
+    "qtdPedidoVenda": null,
+    "qtdReservada": null,
+    "qtdPrevisaoEntrada": null,
+    "dtUltimaVenda": null,
+    "dtUltimaCompra": null
+}

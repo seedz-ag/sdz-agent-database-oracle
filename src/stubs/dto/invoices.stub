@@ -1,0 +1,19 @@
+{
+    "cnpjOrigemDadosFaturamento": null,
+    "dataCadastroFaturamento": null,
+    "dataAtualizacaoFaturamento": null,
+    "idCliente": null,
+    "id": null,
+    "documentoCliente": null,
+    "numeroNfFaturamento": null,
+    "serieNfFaturamento": null,
+    "cfopFaturamento": null,
+    "dtEmissaoFaturamento": null,
+    "dtSaidaFaturamento": null,
+    "statusNfFaturamento": null,
+    "municipioEntregaFaturamento": null,
+    "ufEntregaFaturamento": null,
+    "vlrTotalProdutosFaturamento": null,
+    "vlrTotalNfFaturamento": null,
+    "tipoFaturamento": null
+}

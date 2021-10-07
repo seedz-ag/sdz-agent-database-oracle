@@ -1,0 +1,18 @@
+{
+    "cnpjOrigemDados": null,
+    "dataCadastro": null,
+    "id": null,
+    "dataAtualizacao": null,
+    "idCliente": null,
+    "idPropriedade": null,
+    "documentoCliente": null,
+    "tipo": null,
+    "cep": null,
+    "uf": null,
+    "municipio": null,
+    "bairro": null,
+    "logradouro": null,
+    "numero": null,
+    "complemento": null,
+    "codIbge": null 
+}
