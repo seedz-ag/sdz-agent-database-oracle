@@ -1,7 +1,2 @@
-import Connector from "./connector";
-import OracleRepository from "./repository";
-
-export default {
-  Connector,
-  OracleRepository,
-};
+export { default as Connector } from "./connector";
+export { default as Repository } from "./repository";

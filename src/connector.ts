@@ -1,6 +1,5 @@
 import {
   ConnectorInterface,
-  ConfigDatabaseInterface,
   DatabaseRow,
 } from "sdz-agent-types";
 
@@ -9,10 +8,12 @@ import oracledb, { Connection } from "oracledb";
 export default class Connector implements ConnectorInterface {
   private connection: Connection;
   private config: any;
+
   constructor(config: any) {
     this.setConfig(config);
   }
-  async connect() {
+
+  async connect(): Promise<void> {
     if (!this.connection) {
       try {
         this.connection = await oracledb.getConnection(this.config);
@@ -22,7 +23,7 @@ export default class Connector implements ConnectorInterface {
     }
   }
 
-  async close() {
+  async close(): Promise<void> {
     if (this.connection) {
       try {
         await this.connection.close();
@@ -33,12 +34,12 @@ export default class Connector implements ConnectorInterface {
   }
 
   async execute(query: string): Promise<DatabaseRow[]> {
-    let resultSet = [];
+    let resultSet: DatabaseRow[] = [];
     if (!this.connection) {
       await this.connect();
     }
     try {
-      const response = await this.connection.execute(query);
+      const response = await this.connection.execute<DatabaseRow[]>(query);
       if (response) {
         resultSet = response.rows;
       }
