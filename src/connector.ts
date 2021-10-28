@@ -16,7 +16,13 @@ export default class Connector implements ConnectorInterface {
   async connect(): Promise<void> {
     if (!this.connection) {
       try {
-        this.connection = await oracledb.getConnection(this.config);
+        this.connection = await oracledb.getConnection(
+          { 
+            user: this.config.username,
+            password: this.config.password,
+            connectString: `${this.config.host}:${this.config.port}/${this.config.service}`
+          }
+        );
       } catch (e) {
         console.log(e);
       }

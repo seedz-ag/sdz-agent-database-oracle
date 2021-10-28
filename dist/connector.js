@@ -11,7 +11,11 @@ class Connector {
     async connect() {
         if (!this.connection) {
             try {
-                this.connection = await oracledb_1.default.getConnection(this.config);
+                this.connection = await oracledb_1.default.getConnection({
+                    user: this.config.username,
+                    password: this.config.password,
+                    connectString: `${this.config.host}:${this.config.port}/${this.config.service}`
+                });
             }
             catch (e) {
                 console.log(e);
