@@ -4,7 +4,7 @@
     "dataAtualizacaoFaturamento": "DATA_ALTERACAO",
     "idCliente": null,
     "id": "id",
-    "documentoCliente": F2_DOC,
+    "documentoCliente": "F2_DOC",
     "numeroNfFaturamento": null,
     "serieNfFaturamento": F2_SERIE,
     "cfopFaturamento": null,
