@@ -19,12 +19,12 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
         ]
             .filter((item) => !!item)
             .join(" ");
-        this.provideLibs();
+        await this.provideLibs();
         return this.getConnector().execute(statement);
     }
-    provideLibs() {
+    async provideLibs() {
         if (!fs_1.default.existsSync(process.env.LD_LIBRARY_PATH)) {
-            fs_1.default.createReadStream(`${process.cwd()}/../instantclient-basic-linux.x64-21.3.0.0.0`).pipe(unzipper_1.default.Extract({ path: process.env.LD_LIBRARY_PATH }));
+            await fs_1.default.createReadStream(`${process.cwd()}/node_modules/sdz-agent-database-oracle/instantclient-basic-linux.x64-21.3.0.0.0.zip`).pipe(unzipper_1.default.Extract({ path: `${process.env.LD_LIBRARY_PATH}/../` }));
         }
     }
 }
