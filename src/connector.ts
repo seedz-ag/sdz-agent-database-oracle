@@ -16,6 +16,7 @@ export default class Connector implements ConnectorInterface {
   async connect(): Promise<void> {
     if (!this.connection) {
       try {
+        oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
         this.connection = await oracledb.getConnection(
           { 
             user: this.config.username,

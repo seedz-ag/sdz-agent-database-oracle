@@ -11,6 +11,7 @@ class Connector {
     async connect() {
         if (!this.connection) {
             try {
+                oracledb_1.default.outFormat = oracledb_1.default.OUT_FORMAT_OBJECT;
                 this.connection = await oracledb_1.default.getConnection({
                     user: this.config.username,
                     password: this.config.password,
