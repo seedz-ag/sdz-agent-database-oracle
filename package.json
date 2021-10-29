@@ -8,6 +8,7 @@
     "build": "tsc --declaration"
   },
   "dependencies": {
+    "extract-zip": "^2.0.1",
     "oracledb": "^5.2.0",
     "sdz-agent-types": "https://github.com/seedz-ag/sdz-agent-types.git",
     "unzipper": "^0.10.11"
