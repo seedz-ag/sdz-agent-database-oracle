@@ -4,7 +4,7 @@ export default class OracleRepository extends AbstractRepository {
     count(entity: string): any {
         return this.execute(
           `SELECT COUNT (*) as total FROM (${this.loadFile(entity)})`
-        );
+        )[0];
       }
     
       execute(query: string, page?: number, limit?: number): any {
