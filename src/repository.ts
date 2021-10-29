@@ -1,13 +1,12 @@
 import { AbstractRepository } from "sdz-agent-types";
 
 export default class OracleRepository extends AbstractRepository {
-    count(entity: string): any {
-        return this.execute(
-          `SELECT COUNT (*) as total FROM (${this.loadFile(entity)})`
-        )[0];
+    async count(entity: string): Promise<any> {
+        const total = (await this.execute(`SELECT COUNT (*) as total FROM (${this.loadFile(entity)})`))[0].TOTAL;
+        return total ;
       }
     
-      execute(query: string, page?: number, limit?: number): any {
+      async execute(query: string, page?: number, limit?: number): Promise<any> {
         const statement = [
           query,
           page && limit ? `OFFSET ${page * limit} ROWS` : null,
