@@ -24,6 +24,7 @@ export default class Connector implements ConnectorInterface {
             connectString: `${this.config.host}:${this.config.port}/${this.config.service}`
           }
         );
+         await this.connection.execute(`ALTER SESSION SET CURRENT_SCHEMA = ${this.config.schema}`);
       } catch (e) {
         console.log(e);
       }

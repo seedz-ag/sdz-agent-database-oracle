@@ -17,6 +17,7 @@ class Connector {
                     password: this.config.password,
                     connectString: `${this.config.host}:${this.config.port}/${this.config.service}`
                 });
+                await this.connection.execute(`ALTER SESSION SET CURRENT_SCHEMA = ${this.config.schema}`);
             }
             catch (e) {
                 console.log(e);
