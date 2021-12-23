@@ -1,61 +1,125 @@
+   SELECT * FROM (SELECT
+   0 as TIPOQUERY,		
+    (CASE F2_FILIAL
+        WHEN '010101' THEN '01696819000106'
+        WHEN '010102' THEN '01696819000360'
+        WHEN '010103' THEN '01696819000440'
+        WHEN '010104' THEN '01696819000521'
+        WHEN '010105' THEN '01696819000602'
+        WHEN '010106' THEN '01696819000793'
+        WHEN '010107' THEN '01696819000874'
+        WHEN '010108' THEN '01696819000955'
+        WHEN '010110' THEN '01696819001170'
+        WHEN '010111' THEN '01696819001250'
+        ELSE NULL
+     END) as CNPJORIGEMDADOS
+     ,(CASE F2_TIPO
+    WHEN 'N' THEN '1'
+    WHEN 'D' THEN '0'
+    WHEN 'P' THEN '2'
+    WHEN 'I' THEN '2'
+    WHEN 'C' THEN '1'
+    WHEN 'B' THEN '2'
+     ELSE NULL
+     END) TIPO
+        ,(F2_CLIENTE || F2_LOJA) IDCLIENTE
+        ,A1_CGC
+        ,F2_DOC
+        ,F2_SERIE
+        ,F2_EMISSAO
+        ,(CASE F2_STATUS
+       WHEN ' ' THEN 'Concluida'
+       WHEN '015' THEN 'Cancelada'
+       WHEN '025' THEN 'Pendente'
+       ELSE NULL
+     END) F2_STATUS
+     CAST(F2_VALMERC  AS VARCHAR(10)) AS VALMERC,
+     CAST(F2_VALBRUT  AS VARCHAR(10)) AS VALBRUT,
+        ,(F2_FILIAL || F2_DOC || F2_SERIE || F2_CLIENTE || F2_LOJA || F2_EMISSAO || F2_CHVNFE || F2_IDNF) ID
+        ,B.R_E_C_N_O_
+        ,B.D_E_L_E_T_ DELETADO
+    ,F2_DAUTNFE
+    ,F2_UFDEST
+        ,TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGI, 16, 1)) - 50)), 'YYYYMMDD')   as DATA_INCLUSAO
+        ,TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGA, 16, 1)) - 50)), 'YYYYMMDD')   as DATA_ATUALIZACAO
+FROM SF2010 B
+INNER JOIN SA1010 X ON X.A1_COD = B.F2_CLIENTE
+        AND X.A1_LOJA = B.F2_LOJA
+        AND X.D_E_L_E_T_ <> '*'
+WHERE B.F2_USERLGI <> ' '
+        AND (
+                                (
+                                TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') >= '20211004'
+                                AND TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') <= '20211011'
+                                )
+                                OR
+                                (
+                                TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') >= '20211004'
+                                AND TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') <= '20211011'
+                                )
+                )
+UNION ALL
 SELECT
-	F2_FILIAL,
-	A1_FILIAL,
-(F2_CLIENTE || F2_LOJA) idCliente,
-	A1_CGC,
-	F2_DOC,
-	F2_SERIE,
-	F2_EMISSAO,
-	F2_STATUS,
-	F2_VALMERC,
-	F2_VALBRUT,
-(
-		F2_FILIAL || F2_DOC || F2_SERIE || F2_CLIENTE || F2_LOJA || F2_EMISSAO || F2_CHVNFE || F2_IDNF
-	) id,
-	B.R_E_C_N_O_,
-	B.D_E_L_E_T_ DELETADO_SF2,
-	TO_CHAR(
-		TO_DATE('19960101', 'YYYYMMDD') + (
-			(ASCII(SUBSTR(B.F2_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGI, 16, 1)) - 50)
-		),
-		'YYYYMMDD'
-	) AS DATA_INCLUSAO,
-	TO_CHAR(
-		TO_DATE('19960101', 'YYYYMMDD') + (
-			(ASCII(SUBSTR(B.F2_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGA, 16, 1)) - 50)
-		),
-		'YYYYMMDD'
-	) AS DATA_ALTERACAO
-FROM
-	PROTHEUS12.SF2010 B
-	INNER JOIN PROTHEUS12.SA1010 X ON X.A1_COD = B.F2_CLIENTE
-	AND X.A1_LOJA = B.F2_LOJA
-	AND X.D_E_L_E_T_ <> '*'
-WHERE
-	B.F2_USERLGI <> ' '
-	AND (
-		TO_CHAR(
-			TO_DATE('19960101', 'YYYYMMDD') + (
-				(ASCII(SUBSTR(B.F2_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGI, 16, 1)) - 50)
-			),
-			'YYYYMMDD'
-		) >= '20210922'
-		AND TO_CHAR(
-			TO_DATE('19960101', 'YYYYMMDD') + (
-				(ASCII(SUBSTR(B.F2_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGI, 16, 1)) - 50)
-			),
-			'YYYYMMDD'
-		) <= '20210924'
-		OR TO_CHAR(
-			TO_DATE('19960101', 'YYYYMMDD') + (
-				(ASCII(SUBSTR(B.F2_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGA, 16, 1)) - 50)
-			),
-			'YYYYMMDD'
-		) >= '20210922'
-		AND TO_CHAR(
-			TO_DATE('19960101', 'YYYYMMDD') + (
-				(ASCII(SUBSTR(B.F2_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGA, 16, 1)) - 50)
-			),
-			'YYYYMMDD'
-		) <= '20210924'
-	)
+1 as TIPOQUERY,		
+           (CASE F1_FILIAL
+                WHEN '010101' THEN '01696819000106'
+                WHEN '010102' THEN '01696819000360'
+                WHEN '010103' THEN '01696819000440'
+                WHEN '010104' THEN '01696819000521'
+                WHEN '010105' THEN '01696819000602'
+                WHEN '010106' THEN '01696819000793'
+                WHEN '010107' THEN '01696819000874'
+                WHEN '010108' THEN '01696819000955'
+                WHEN '010110' THEN '01696819001170'
+                WHEN '010111' THEN '01696819001250'
+                ELSE NULL
+                 END) as CNPJORIGEMDADOS
+        ,(CASE F1_TIPO
+    WHEN 'N' THEN '1'
+    WHEN 'D' THEN '0'
+    WHEN 'P' THEN '2'
+    WHEN 'I' THEN '2'
+    WHEN 'C' THEN '1'
+    WHEN 'B' THEN '2'
+     ELSE NULL
+     END) TIPO
+        ,(F1_FORNECE || F1_LOJA) IDCLIENTE
+        ,A1_CGC
+        ,F1_DOC
+        ,F1_SERIE
+        ,F1_EMISSAO
+    ,(CASE F1_STATUS
+        WHEN ' ' THEN 'Concluida'
+        WHEN '015' THEN 'Cancelada'
+        WHEN '025' THEN 'Pendente'
+        WHEN '030' THEN 'Compra'
+        WHEN '026' THEN 'Compra'
+        WHEN 'A' THEN 'Concluída'
+        ELSE NULL
+     END) F1_STATUS
+        CAST(F1_VALMERC  AS VARCHAR(10)) AS VALMERC,
+        CAST(F1_VALBRUT  AS VARCHAR(10)) AS VALBRUT,
+        ,(F1_FILIAL || F1_DOC || F1_SERIE || F1_FORNECE || F1_LOJA || F1_EMISSAO || F1_CHVNFE || F1_IDNF) ID
+        ,B.R_E_C_N_O_
+        ,B.D_E_L_E_T_  DELETADO
+    , F1_DAUTNFE
+    ,null
+        ,TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGI, 16, 1)) - 50)), 'YYYYMMDD')   as DATA_INCLUSAO
+        ,TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGA, 16, 1)) - 50)), 'YYYYMMDD')   as DATA_ATUALIZACAO
+FROM SF1010 B
+INNER JOIN SA1010 X ON X.A1_COD = B.F1_FORNECE
+        AND X.A1_LOJA = B.F1_LOJA
+        AND X.D_E_L_E_T_ <> '*'
+WHERE B.F1_USERLGI <> ' '
+        AND (
+                        (
+                        TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') >= '20211004'
+                        AND TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') <= '20211011'
+                        )
+                        OR
+                        (
+                        TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') >= '20211004'
+                        AND TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') <= '20211011')
+                        )
+        AND F1_TIPO = 'D'
+)  ORDER BY TIPOQUERY ASC, R_E_C_N_O_ ASC
