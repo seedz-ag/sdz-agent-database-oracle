@@ -28,7 +28,7 @@
     "valorUnitarioItem": "PRCVEN",
     "valorTotalItem": "VALBRUT",
     "percentualDescItem": null,
-    "valorDescProd": "DESC",
+    "valorDescProd": "DESCONT",
     "valorVendaItem": "TOTAL",
     "cfopItem": "D2_CF"
 } 
