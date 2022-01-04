@@ -41,9 +41,9 @@ INNER JOIN SA1010 X ON X.A1_COD = B.F2_CLIENTE
 WHERE  (
 B.F2_USERLGI <> ' '
         AND     (
-                ( 1=1 AND (TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') >= {START_DATE}))
+                ( 1=1 AND (TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') >= {START_DATE}))
                 OR
-                ( 1=1 AND (TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') >= {START_DATE}))
+                ( 1=1 AND (TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') >= {START_DATE}))
                 )
         )
 UNION ALL
@@ -99,4 +99,5 @@ WHERE
         )       
         AND F1_TIPO = 'D'
 ) 
+   )
 ORDER BY TIPOQUERY ASC, R_E_C_N_O_ ASC
