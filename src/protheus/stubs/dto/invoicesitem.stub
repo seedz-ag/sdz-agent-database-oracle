@@ -3,7 +3,7 @@
     "regraNegocio": null,
     "id": "ID",
     "dataCadastro":"DATA_INCLUSAO",
-    "dataAtualizacao": "DATA_ALTERACAO",
+    "dataAtualizacao": "DATA_ATUALIZACAO",
     "numero": "D2_DOC",
     "serie": "D2_SERIE",
     "dataEmissao": "D2_EMISSAO",
