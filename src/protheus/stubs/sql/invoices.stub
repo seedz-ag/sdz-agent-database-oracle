@@ -25,8 +25,8 @@
        WHEN '025' THEN 'Pendente'
        ELSE NULL
      END) F2_STATUS
-        ,TO_CHAR(F2_VALMERC , 'fm999990.00') AS VALMERC
-        ,TO_CHAR(F2_VALBRUT , 'fm999990.00') AS VALBRUT
+        ,TO_CHAR(F2_VALMERC , 'fm999999990.00') AS VALMERC
+        ,TO_CHAR(F2_VALBRUT , 'fm999999990.00') AS VALBRUT
         ,(F2_FILIAL || F2_DOC || F2_SERIE || F2_CLIENTE || F2_LOJA || F2_EMISSAO || F2_CHVNFE || F2_IDNF) ID
         ,B.R_E_C_N_O_
         ,B.D_E_L_E_T_ DELETADO
@@ -38,18 +38,14 @@ FROM SF2010 B
 INNER JOIN SA1010 X ON X.A1_COD = B.F2_CLIENTE
         AND X.A1_LOJA = B.F2_LOJA
         AND X.D_E_L_E_T_ <> '*'
-WHERE B.F2_USERLGI <> ' '
-        AND (
-                                (
-                                TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') >= '20211004'
-                                AND TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') <= '20211011'
-                                )
-                                OR
-                                (
-                                TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') >= '20211004'
-                                AND TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F2_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F2_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') <= '20211011'
-                                )
+WHERE  (
+B.F2_USERLGI <> ' '
+        AND     (
+                ( 1=1 AND (TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') >= {START_DATE}))
+                OR
+                ( 1=1 AND (TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') >= {START_DATE}))
                 )
+        )
 UNION ALL
 SELECT
 1 as TIPOQUERY,		
@@ -78,11 +74,11 @@ SELECT
         WHEN '025' THEN 'Pendente'
         WHEN '030' THEN 'Compra'
         WHEN '026' THEN 'Compra'
-        WHEN 'A' THEN 'Concluída'
+        WHEN 'A' THEN 'Concluida'
         ELSE NULL
      END) F1_STATUS
-        ,TO_CHAR(F1_VALMERC , 'fm999990.00') AS VALMERC
-        ,TO_CHAR(F1_VALBRUT , 'fm999990.00') AS VALBRUT
+        ,TO_CHAR(F1_VALMERC , 'fm999999990.00') AS VALMERC
+        ,TO_CHAR(F1_VALBRUT , 'fm999999990.00') AS VALBRUT
         ,(F1_FILIAL || F1_DOC || F1_SERIE || F1_FORNECE || F1_LOJA || F1_EMISSAO || F1_CHVNFE || F1_IDNF) ID
         ,B.R_E_C_N_O_
         ,B.D_E_L_E_T_  DELETADO
@@ -94,16 +90,13 @@ FROM SF1010 B
 INNER JOIN SA1010 X ON X.A1_COD = B.F1_FORNECE
         AND X.A1_LOJA = B.F1_LOJA
         AND X.D_E_L_E_T_ <> '*'
-WHERE B.F1_USERLGI <> ' '
-        AND (
-                        (
-                        TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') >= '20211004'
-                        AND TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') <= '20211011'
-                        )
-                        OR
-                        (
-                        TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') >= '20211004'
-                        AND TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') <= '20211011')
-                        )
+WHERE 
+(B.F1_USERLGI <> ' '
+        AND 
+        (       ( 1=1 AND (TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGI, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGI, 16, 1)) - 50)), 'YYYYMMDD') >= {START_DATE}))
+                OR
+                ( 1=1 AND (TO_CHAR(TO_DATE('19960101', 'YYYYMMDD') + ((ASCII(SUBSTR(B.F1_USERLGA, 12, 1)) - 50) * 100 + (ASCII(SUBSTR(B.F1_USERLGA, 16, 1)) - 50)), 'YYYYMMDD') >= {START_DATE}))
+        )       
         AND F1_TIPO = 'D'
-)  ORDER BY TIPOQUERY ASC, R_E_C_N_O_ ASC
+) 
+ORDER BY TIPOQUERY ASC, R_E_C_N_O_ ASC
