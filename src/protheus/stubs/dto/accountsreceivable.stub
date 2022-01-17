@@ -6,7 +6,7 @@
     "id": "ID",
     "idCliente": "IDCLIENTE",
     "nomeCliente": "A1_NOME",
-    "dtEmissao": "E1_EMISSAO",
+    "dataEmissao": "E1_EMISSAO",
     "documento": "E1_NUM",
     "serie": "E1_SERIE",
     "dtVencimentoOriginal": "E1_VENCORI",
