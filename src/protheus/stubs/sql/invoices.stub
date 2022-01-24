@@ -18,7 +18,7 @@
         ,A1_CGC
         ,F2_DOC
         ,F2_SERIE
-        ,F2_EMISSAO
+        ,CAST(F2_EMISSAO as DATE) F2_EMISSAO
         ,(CASE F2_STATUS
        WHEN ' ' THEN 'Concluida'
        WHEN '015' THEN 'Cancelada'
@@ -67,7 +67,7 @@ SELECT
         ,A1_CGC
         ,F1_DOC
         ,F1_SERIE
-        ,F1_EMISSAO
+        ,CAST(F1_EMISSAO as DATE) F1_EMISSAO
     ,(CASE F1_STATUS
         WHEN ' ' THEN 'Concluida'
         WHEN '015' THEN 'Cancelada'

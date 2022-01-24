@@ -11,7 +11,7 @@ WHEN '010102' THEN '010102'
         ,B1_COD
         ,D2_DOC
         ,D2_SERIE
-        ,D2_EMISSAO
+        ,CAST(D2_EMISSAO as DATE) D2_EMISSAO
         ,D2_PEDIDO
         ,(CASE D2_TIPO
         WHEN 'N' THEN '1'
@@ -69,7 +69,7 @@ WHEN '010102' THEN '010102'
         ,B1_COD
         ,D1_DOC
         ,D1_SERIE
-        ,D1_EMISSAO
+        ,CAST(D1_EMISSAO as DATE) D1_EMISSAO
         ,D1_PEDIDO
         ,(CASE D1_TIPO
         WHEN 'N' THEN '1'
