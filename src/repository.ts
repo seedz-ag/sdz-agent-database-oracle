@@ -1,8 +1,8 @@
 import { AbstractRepository } from "sdz-agent-types";
 
 export default class OracleRepository extends AbstractRepository {
-    async count(entity: string): Promise<any> {
-        const total = (await this.execute(`SELECT COUNT (*) as total FROM (${this.buildQuery(this.loadFile(entity))})`))[0].TOTAL;
+    async count(query: string): Promise<any> {
+        const total = (await this.execute(`SELECT COUNT (*) as total FROM (${this.buildQuery(query)})`))[0].TOTAL;
         return total ;
       }
 
