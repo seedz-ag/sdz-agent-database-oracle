@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "oracledb": "^5.2.0",
-    "sdz-agent-types": "https://github.com/seedz-ag/sdz-agent-types.git#bugfix/#24905"
+    "sdz-agent-types": "https://github.com/seedz-ag/sdz-agent-types.git"
   },
   "devDependencies": {
     "@types/node": "^16.6.1"
