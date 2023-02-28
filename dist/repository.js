@@ -4,16 +4,17 @@ const sdz_agent_types_1 = require("sdz-agent-types");
 const oracleVersion11 = "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production";
 class OracleRepository extends sdz_agent_types_1.AbstractRepository {
     async getVersion() {
-        const [versionResult] = await this.execute("SELECT * FROM v$version WHERE banner LIKE '%Oracle%';");
+        const [versionResult] = (await this.execute("SELECT * FROM v$version WHERE banner LIKE '%Oracle%';"))[0];
+        console.log(["VERSION_RESULT", versionResult]);
         this.version = versionResult;
     }
     async count(query) {
         const total = (await this.execute(`SELECT COUNT (*) as total FROM (${this.buildQuery(query)})`))[0].TOTAL;
         return total;
     }
-    async execute(query, page, limit) {
+    execute(query, page, limit) {
         let statement;
-        await this.getVersion();
+        this.getVersion();
         console.log(["VERSION", this.version]);
         switch (this.version) {
             case "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production" /* VERSIONS.V11 */:
