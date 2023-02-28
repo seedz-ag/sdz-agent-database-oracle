@@ -14,7 +14,7 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
     }
     execute(query, page, limit) {
         let statement;
-        this.getVersion();
+        Promise.resolve(this.getVersion());
         console.log(["VERSION", this.version]);
         switch (this.version) {
             case "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production" /* VERSIONS.V11 */:

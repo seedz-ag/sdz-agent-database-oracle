@@ -33,7 +33,7 @@ export default class OracleRepository extends AbstractRepository {
   execute(query: string, page?: number, limit?: number): Promise<any> {
     let statement: string | null;
 
-    this.getVersion();
+    Promise.resolve(this.getVersion());
 
     console.log(["VERSION", this.version]);
 
