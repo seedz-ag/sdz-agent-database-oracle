@@ -8,12 +8,12 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
         this.version = versionResult;
     }
     async count(query) {
-        await this.getVersion();
         const total = (await this.execute(`SELECT COUNT (*) as total FROM (${this.buildQuery(query)})`))[0].TOTAL;
         return total;
     }
     execute(query, page, limit) {
         let statement;
+        this.version();
         console.log(["VERSION", this.version]);
         switch (this.version) {
             case "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production" /* VERSIONS.V11 */:
