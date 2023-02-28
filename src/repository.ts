@@ -31,6 +31,8 @@ export default class OracleRepository extends AbstractRepository {
   execute(query: string, page?: number, limit?: number): Promise<any> {
     let statement: string | null;
 
+    console.log(this.version);
+
     switch (this.version) {
       case VERSIONS.V11:
         statement = [
