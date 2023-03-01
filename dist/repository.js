@@ -12,9 +12,11 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
         const total = (await this.execute(`SELECT COUNT (*) as total FROM (${this.buildQuery(query)})`))[0].TOTAL;
         return total;
     }
-    execute(query, page, limit) {
+    async execute(query, page, limit) {
         let statement;
-        Promise.resolve(this.getVersion());
+        if (!this.version) {
+            await this.getVersion();
+        }
         console.log(["VERSION", this.version]);
         switch (this.version) {
             case "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production" /* VERSIONS.V11 */:
@@ -42,7 +44,8 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
                     .join(" ");
                 break;
         }
-        return this.getConnector().execute(statement);
+        const resultSet = await this.getConnector().execute(statement);
+        return resultSet;
     }
 }
 exports.default = OracleRepository;

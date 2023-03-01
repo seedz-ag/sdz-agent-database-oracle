@@ -30,10 +30,12 @@ export default class OracleRepository extends AbstractRepository {
     return total;
   }
 
-  execute(query: string, page?: number, limit?: number): Promise<any> {
+  async execute(query: string, page?: number, limit?: number): Promise<any> {
     let statement: string | null;
 
-    Promise.resolve(this.getVersion());
+    if (!this.version) {
+      await this.getVersion();
+    }
 
     console.log(["VERSION", this.version]);
 
@@ -66,6 +68,7 @@ export default class OracleRepository extends AbstractRepository {
           .join(" ");
         break;
     }
-    return this.getConnector().execute(statement);
+    const resultSet = await this.getConnector().execute(statement);
+    return resultSet;
   }
 }
