@@ -27,10 +27,10 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
                     this.buildQuery(query),
                     page && limit
                         ? `SELECT T.*, rowNum as rowIndex
-          FROM (
-              ${query}
-          )T)T
-          WHERE rowIndex > ${page * limit} AND rowIndex <= ${(page + 1) * limit};`
+            FROM (
+                ${query}
+            )T)T
+            WHERE rowIndex > ${limit * page} AND rowIndex <= ${limit * (page + 1)};`
                         : null,
                     limit ? `WHERE rownum <= ${limit}` : null,
                 ]
