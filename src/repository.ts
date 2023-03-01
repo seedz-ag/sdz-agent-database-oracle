@@ -8,7 +8,7 @@ const enum VERSIONS {
 }
 
 export default class OracleRepository extends AbstractRepository {
-  private version;
+  private version = "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production";
 
   private async getVersion() {
     const [version] = await this.execute(
@@ -30,9 +30,9 @@ export default class OracleRepository extends AbstractRepository {
   async execute(query: string, page?: number, limit?: number): Promise<any> {
     let statement: string | null;
 
-    if (!this.version) {
-      await this.getVersion();
-    }
+    // if (!this.version) {
+    //   await this.getVersion();
+    // }
 
     console.log(["VERSION", this.version]);
 
