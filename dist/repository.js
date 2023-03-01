@@ -23,16 +23,30 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
         console.log(["VERSION", this.version]);
         switch (this.version) {
             case "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production" /* VERSIONS.V11 */:
+                // statement = [
+                //   this.buildQuery(query),
+                //   page && limit
+                //     ? `SELECT T.*, rowNum as rowIndex
+                //     FROM (
+                //         ${query}
+                //     )T)T
+                //     WHERE rowIndex > ${limit * page} AND rowIndex <= ${
+                //         limit * (page + 1)
+                //       };`
+                //     : null,
+                //   limit ? `WHERE rownum <= ${limit}` : null,
+                // ]
+                //   .filter((item) => !!item)
+                //   .join(" ");
                 statement = [
-                    this.buildQuery(query),
                     page && limit
-                        ? `SELECT T.*, rowNum as rowIndex
+                        ? this.buildQuery(`SELECT T.*, rowNum as rowIndex
             FROM (
                 ${query}
             )T)T
-            WHERE rowIndex > ${limit * page} AND rowIndex <= ${limit * (page + 1)};`
+            WHERE rowIndex > ${limit * page} AND rowIndex <= ${limit * (page + 1)};`)
                         : null,
-                    limit ? `WHERE rownum <= ${limit}` : null,
+                    limit ? this.buildQuery(`${query} WHERE rownum <= ${limit}`) : null,
                 ]
                     .filter((item) => !!item)
                     .join(" ");
