@@ -11,14 +11,11 @@ export default class OracleRepository extends AbstractRepository {
   private version;
 
   private async getVersion() {
-    const [versionResult] = (
-      await this.execute(
-        "SELECT * FROM v$version WHERE banner LIKE '%Oracle%';"
-      )
-    )[0];
+    const [version] = await this.execute(
+      "SELECT * FROM v$version WHERE banner LIKE '%Oracle%';"
+    );
 
-    console.log(["VERSION_RESULT", versionResult]);
-    this.version = versionResult;
+    this.version = version;
   }
 
   async count(query: string): Promise<any> {
