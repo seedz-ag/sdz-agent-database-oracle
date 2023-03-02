@@ -5,12 +5,12 @@ const oracleVersion11 = "Oracle Database 11g Release 11.2.0.4.0 - 64bit Producti
 class OracleRepository extends sdz_agent_types_1.AbstractRepository {
     async getVersion() {
         try {
-            const [version] = await this.execute("SELECT * FROM v$version WHERE banner LIKE '%Oracle%';");
+            const [version] = await this.execute("SELECT * FROM v$version WHERE banner LIKE '%Oracle%'");
             console.log({ version });
             this.version = version;
         }
         catch (error) {
-            console.log(error);
+            console.log({ error });
         }
     }
     async count(query) {
@@ -32,9 +32,9 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
                 ${query}
             )T)T)`),
                     page && limit
-                        ? `WHERE rowIndex > ${limit * page} AND rowIndex <= ${limit * (page + 1)};`
+                        ? `WHERE rowIndex > ${limit * page} AND rowIndex <= ${limit * (page + 1)}`
                         : null,
-                    limit ? `WHERE rowIndex <= ${limit};` : null,
+                    limit ? `WHERE rowIndex <= ${limit}` : null,
                 ]
                     .filter((item) => !!item)
                     .join(" ");

@@ -13,14 +13,14 @@ export default class OracleRepository extends AbstractRepository {
   private async getVersion() {
     try {
       const [version] = await this.execute(
-        "SELECT * FROM v$version WHERE banner LIKE '%Oracle%';"
+        "SELECT * FROM v$version WHERE banner LIKE '%Oracle%'"
       );
 
       console.log({ version });
 
       this.version = version;
     } catch (error) {
-      console.log(error);
+      console.log({ error });
     }
   }
 
@@ -54,9 +54,9 @@ export default class OracleRepository extends AbstractRepository {
           page && limit
             ? `WHERE rowIndex > ${limit * page} AND rowIndex <= ${
                 limit * (page + 1)
-              };`
+              }`
             : null,
-          limit ? `WHERE rowIndex <= ${limit};` : null,
+          limit ? `WHERE rowIndex <= ${limit}` : null,
         ]
           .filter((item) => !!item)
           .join(" ");
