@@ -3,10 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sdz_agent_types_1 = require("sdz-agent-types");
 const oracleVersion11 = "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production";
 class OracleRepository extends sdz_agent_types_1.AbstractRepository {
-    constructor() {
-        super(...arguments);
-        this.version = "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production";
-    }
     async getVersion() {
         const [version] = await this.execute("SELECT * FROM v$version WHERE banner LIKE '%Oracle%';");
         this.version = version;
@@ -18,9 +14,9 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
     async execute(query, page, limit) {
         console.log(["QUERY", query, "PAGE", page, "LIMIT", limit]);
         let statement;
-        // if (!this.version) {
-        //   await this.getVersion();
-        // }
+        if (!this.version) {
+            await this.getVersion();
+        }
         console.log(["VERSION", this.version]);
         switch (this.version) {
             case "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production" /* VERSIONS.V11 */:
