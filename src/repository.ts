@@ -21,6 +21,7 @@ export default class OracleRepository extends AbstractRepository {
       this.version = version;
     } catch (error) {
       console.log({ error });
+      return error;
     }
   }
 

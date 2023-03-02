@@ -11,6 +11,7 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
         }
         catch (error) {
             console.log({ error });
+            return error;
         }
     }
     async count(query) {
