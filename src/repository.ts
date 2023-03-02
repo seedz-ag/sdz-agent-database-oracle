@@ -39,22 +39,22 @@ export default class OracleRepository extends AbstractRepository {
     switch (this.version) {
       case VERSIONS.V11:
         statement = [
-          this.buildQuery(query),
+          // this.buildQuery(query),
           page && limit
-            ? `SELECT T.*, rowNum as rowIndex
+            ? this.buildQuery(`SELECT T.*, rowNum as rowIndex
             FROM (
                 ${query}
             )T)T
             WHERE rowIndex > ${limit * page} AND rowIndex <= ${
                 limit * (page + 1)
-              };`
+              };`)
             : null,
           limit
-            ? `SELECT T.*, rowNum as rowIndex
+            ? this.buildQuery(`SELECT T.*, rowNum as rowIndex
           FROM (
               ${query}
           )T)T
-          WHERE rowIndex <= ${limit};`
+          WHERE rowIndex <= ${limit};`)
             : null,
         ]
           .filter((item) => !!item)

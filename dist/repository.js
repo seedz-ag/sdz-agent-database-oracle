@@ -24,20 +24,20 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
         switch (this.version) {
             case "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production" /* VERSIONS.V11 */:
                 statement = [
-                    this.buildQuery(query),
+                    // this.buildQuery(query),
                     page && limit
-                        ? `SELECT T.*, rowNum as rowIndex
+                        ? this.buildQuery(`SELECT T.*, rowNum as rowIndex
             FROM (
                 ${query}
             )T)T
-            WHERE rowIndex > ${limit * page} AND rowIndex <= ${limit * (page + 1)};`
+            WHERE rowIndex > ${limit * page} AND rowIndex <= ${limit * (page + 1)};`)
                         : null,
                     limit
-                        ? `SELECT T.*, rowNum as rowIndex
+                        ? this.buildQuery(`SELECT T.*, rowNum as rowIndex
           FROM (
               ${query}
           )T)T
-          WHERE rowIndex <= ${limit};`
+          WHERE rowIndex <= ${limit};`)
                         : null,
                 ]
                     .filter((item) => !!item)
