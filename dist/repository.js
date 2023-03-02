@@ -5,7 +5,7 @@ const oracleVersion11 = "Oracle Database 11g Release 11.2.0.4.0 - 64bit Producti
 class OracleRepository extends sdz_agent_types_1.AbstractRepository {
     async getVersion() {
         if (!this.version) {
-            const version = await this.execute("SELECT * FROM v$version WHERE LIKE '%Oracle%'");
+            const version = (await this.getConnector().execute("SELECT * FROM v$version banner WHERE LIKE '%Oracle%'"))[0];
             console.log({ version });
             this.version = version;
         }
