@@ -12,9 +12,9 @@ export default class OracleRepository extends AbstractRepository {
 
   private async getVersion() {
     if (!this.version) {
-      const version = (
-        await this.execute("SELECT * FROM v$version WHERE LIKE '%Oracle%'")
-      )[0];
+      const version = await this.execute(
+        "SELECT * FROM v$version WHERE LIKE '%Oracle%'"
+      );
 
       console.log({ version });
 
