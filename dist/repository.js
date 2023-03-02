@@ -7,7 +7,7 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
         try {
             const [version] = await this.execute("SELECT * FROM v$version WHERE banner LIKE '%Oracle%'");
             console.log({ version });
-            this.version = version;
+            this.version = version.BANNER;
         }
         catch (error) {
             console.log({ error });
