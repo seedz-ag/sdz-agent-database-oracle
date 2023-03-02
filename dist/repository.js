@@ -16,6 +16,7 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
         return total;
     }
     async execute(query, page, limit) {
+        console.log(["QUERY", query, "PAGE", page, "LIMIT", limit]);
         let statement;
         // if (!this.version) {
         //   await this.getVersion();

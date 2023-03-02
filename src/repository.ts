@@ -28,6 +28,8 @@ export default class OracleRepository extends AbstractRepository {
   }
 
   async execute(query: string, page?: number, limit?: number): Promise<any> {
+    console.log(["QUERY", query, "PAGE", page, "LIMIT", limit]);
+
     let statement: string | null;
 
     // if (!this.version) {
