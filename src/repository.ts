@@ -42,8 +42,8 @@ export default class OracleRepository extends AbstractRepository {
             FROM (`,
           this.buildQuery(query),
           `)T)T`,
-          page && page !== 0 && limit
-            ? `WHERE rowIndex > ${page * limit || limit} AND ${
+          page && limit
+            ? `WHERE rowIndex > ${page * limit || limit} AND rowIndex <= ${
                 (page + 1) * limit || this.total
               }`
             : null,

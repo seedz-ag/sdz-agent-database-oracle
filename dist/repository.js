@@ -29,8 +29,8 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
             FROM (`,
                     this.buildQuery(query),
                     `)T)T`,
-                    page && page !== 0 && limit
-                        ? `WHERE rowIndex > ${page * limit || limit} AND ${(page + 1) * limit || this.total}`
+                    page && limit
+                        ? `WHERE rowIndex > ${page * limit || limit} AND rowIndex <= ${(page + 1) * limit || this.total}`
                         : null,
                     limit && !page ? `WHERE rowIndex <= ${limit}` : null,
                 ]
