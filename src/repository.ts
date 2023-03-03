@@ -8,18 +8,18 @@ const enum VERSIONS {
 }
 
 export default class OracleRepository extends AbstractRepository {
-  private version;
+  private version = "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production";
 
-  private async getVersion() {
-    if (!this.version) {
-      const [{ BANNER }] = await this.getConnector().execute(
-        "SELECT * FROM v$version WHERE banner LIKE '%Oracle%'"
-      );
-      this.version = BANNER;
-    }
-    console.log({ versionDentro: this.version });
-    return this.version;
-  }
+  // private async getVersion() {
+  //   if (!this.version) {
+  //     const [{ BANNER }] = await this.getConnector().execute(
+  //       "SELECT * FROM v$version WHERE banner LIKE '%Oracle%'"
+  //     );
+  //     this.version = BANNER;
+  //   }
+  //   console.log({ versionDentro: this.version });
+  //   return this.version;
+  // }
 
   async count(query: string): Promise<any> {
     const total = (
@@ -37,7 +37,7 @@ export default class OracleRepository extends AbstractRepository {
 
     console.log({ versionFora: this.version });
 
-    switch (await this.getVersion()) {
+    switch (this.version) {
       case VERSIONS.V11:
         statement = [
           this.buildQuery(`SELECT T.*, rowNum as rowIndex
