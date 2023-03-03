@@ -18,7 +18,6 @@ export default class OracleRepository extends AbstractRepository {
       );
       this.version = BANNER;
     }
-    console.log({ versionDentro: this.version });
     return this.version;
   }
 
@@ -33,22 +32,22 @@ export default class OracleRepository extends AbstractRepository {
   }
 
   async execute(query: string, page?: number, limit?: number): Promise<any> {
-    console.log({ query, page, limit });
-
     let statement: string | null;
-
-    console.log({ versionFora: this.version });
 
     switch (await this.getVersion()) {
       case VERSIONS.V11:
         statement = [
+          `SELECT T.* FROM ( 
+            SELECT T.*, rowNum as rowIndex
+            FROM (`,
           this.buildQuery(query),
+          `)T)T`,
           page && page !== 0 && limit
-            ? `WHERE rowNum > ${page * limit || limit} AND ${
+            ? `WHERE rowIndex > ${page * limit || limit} AND ${
                 (page + 1) * limit || this.total
               }`
             : null,
-          limit ? `WHERE rowNum <= ${limit}` : null,
+          limit && !page ? `WHERE rowIndex <= ${limit}` : null,
         ]
           .filter((item) => !!item)
           .join(" ");

@@ -12,7 +12,6 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
             const [{ BANNER }] = await this.getConnector().execute("SELECT * FROM v$version WHERE banner LIKE '%Oracle%'");
             this.version = BANNER;
         }
-        console.log({ versionDentro: this.version });
         return this.version;
     }
     async count(query) {
@@ -21,17 +20,19 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
         return total;
     }
     async execute(query, page, limit) {
-        console.log({ query, page, limit });
         let statement;
-        console.log({ versionFora: this.version });
         switch (await this.getVersion()) {
             case "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production" /* VERSIONS.V11 */:
                 statement = [
+                    `SELECT T.* FROM ( 
+            SELECT T.*, rowNum as rowIndex
+            FROM (`,
                     this.buildQuery(query),
+                    `)T)T`,
                     page && page !== 0 && limit
-                        ? `WHERE rowNum > ${page * limit || limit} AND ${(page + 1) * limit || this.total}`
+                        ? `WHERE rowIndex > ${page * limit || limit} AND ${(page + 1) * limit || this.total}`
                         : null,
-                    limit ? `WHERE rowNum <= ${limit}` : null,
+                    limit && !page ? `WHERE rowIndex <= ${limit}` : null,
                 ]
                     .filter((item) => !!item)
                     .join(" ");
