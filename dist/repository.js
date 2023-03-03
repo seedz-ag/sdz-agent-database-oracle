@@ -5,10 +5,10 @@ const oracleVersion11 = "Oracle Database 11g Release 11.2.0.4.0 - 64bit Producti
 class OracleRepository extends sdz_agent_types_1.AbstractRepository {
     async getVersion() {
         if (!this.version) {
-            const version = (await this.getConnector().execute("SELECT * FROM v$version banner WHERE LIKE '%Oracle%'"))[0];
-            console.log({ version });
-            this.version = version;
+            const [{ BANNER }] = await this.getConnector().execute("SELECT * FROM v$version WHERE banner LIKE '%Oracle%'");
+            this.version = BANNER;
         }
+        console.log({ versionDentro: this.version });
         return this.version;
     }
     async count(query) {
@@ -18,18 +18,17 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
     async execute(query, page, limit) {
         console.log({ query, page, limit });
         let statement;
-        console.log({ this_version: this.version });
+        console.log({ versionFora: this.version });
         switch (await this.getVersion()) {
             case "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production" /* VERSIONS.V11 */:
                 statement = [
                     this.buildQuery(`SELECT T.*, rowNum as rowIndex
-            FROM (
-                ${query}
-            )T)T)`),
-                    page && limit
-                        ? `WHERE rowIndex > ${limit * page} AND rowIndex <= ${limit * (page + 1)}`
-                        : null,
-                    limit ? `WHERE rowIndex <= ${limit}` : null,
+          FROM (
+              SELECT *
+              FROM DOLPHIN_INTEGRA.FATURAMENTO
+          )T)T;`),
+                    page && limit ? `WHERE rowIndex > 1000 AND rowIndex <= 2000` : null,
+                    limit ? `WHERE rowIndex <= 1000` : null,
                 ]
                     .filter((item) => !!item)
                     .join(" ");

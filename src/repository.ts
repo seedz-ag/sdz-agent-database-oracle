@@ -12,16 +12,12 @@ export default class OracleRepository extends AbstractRepository {
 
   private async getVersion() {
     if (!this.version) {
-      const version = (
-        await this.getConnector().execute(
-          "SELECT * FROM v$version banner WHERE LIKE '%Oracle%'"
-        )
-      )[0];
-
-      console.log({ version });
-
-      this.version = version;
+      const [{ BANNER }] = await this.getConnector().execute(
+        "SELECT * FROM v$version WHERE banner LIKE '%Oracle%'"
+      );
+      this.version = BANNER;
     }
+    console.log({ versionDentro: this.version });
     return this.version;
   }
 
@@ -39,21 +35,18 @@ export default class OracleRepository extends AbstractRepository {
 
     let statement: string | null;
 
-    console.log({ this_version: this.version });
+    console.log({ versionFora: this.version });
 
     switch (await this.getVersion()) {
       case VERSIONS.V11:
         statement = [
           this.buildQuery(`SELECT T.*, rowNum as rowIndex
-            FROM (
-                ${query}
-            )T)T)`),
-          page && limit
-            ? `WHERE rowIndex > ${limit * page} AND rowIndex <= ${
-                limit * (page + 1)
-              }`
-            : null,
-          limit ? `WHERE rowIndex <= ${limit}` : null,
+          FROM (
+              SELECT *
+              FROM DOLPHIN_INTEGRA.FATURAMENTO
+          )T)T;`),
+          page && limit ? `WHERE rowIndex > 1000 AND rowIndex <= 2000` : null,
+          limit ? `WHERE rowIndex <= 1000` : null,
         ]
           .filter((item) => !!item)
           .join(" ");
