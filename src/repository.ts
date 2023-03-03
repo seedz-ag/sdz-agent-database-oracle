@@ -8,18 +8,19 @@ const enum VERSIONS {
 }
 
 export default class OracleRepository extends AbstractRepository {
-  private version = "Oracle Database 11g Release 11.2.0.4.0 - 64bit Production";
+  private version = oracleVersion11;
+  private total;
 
-  // private async getVersion() {
-  //   if (!this.version) {
-  //     const [{ BANNER }] = await this.getConnector().execute(
-  //       "SELECT * FROM v$version WHERE banner LIKE '%Oracle%'"
-  //     );
-  //     this.version = BANNER;
-  //   }
-  //   console.log({ versionDentro: this.version });
-  //   return this.version;
-  // }
+  private async getVersion() {
+    if (!this.version) {
+      const [{ BANNER }] = await this.getConnector().execute(
+        "SELECT * FROM v$version WHERE banner LIKE '%Oracle%'"
+      );
+      this.version = BANNER;
+    }
+    console.log({ versionDentro: this.version });
+    return this.version;
+  }
 
   async count(query: string): Promise<any> {
     const total = (
@@ -27,6 +28,7 @@ export default class OracleRepository extends AbstractRepository {
         `SELECT COUNT (*) as total FROM (${this.buildQuery(query)})`
       )
     )[0].TOTAL;
+    this.total = total;
     return total;
   }
 
@@ -37,16 +39,16 @@ export default class OracleRepository extends AbstractRepository {
 
     console.log({ versionFora: this.version });
 
-    switch (this.version) {
+    switch (await this.getVersion()) {
       case VERSIONS.V11:
         statement = [
-          this.buildQuery(`SELECT T.*, rowNum as rowIndex
-          FROM (
-              SELECT *
-              FROM DOLPHIN_INTEGRA.FATURAMENTO
-          )T)T;`),
-          page && limit ? `WHERE rowIndex > 1000 AND rowIndex <= 2000` : null,
-          limit ? `WHERE rowIndex <= 1000` : null,
+          this.buildQuery(query),
+          page && page !== 0 && limit
+            ? `WHERE rowNum > ${page * limit || limit} AND ${
+                (page + 1) * limit || this.total
+              }`
+            : null,
+          limit ? `WHERE rowNum <= ${limit}` : null,
         ]
           .filter((item) => !!item)
           .join(" ");
