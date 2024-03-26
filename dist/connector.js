@@ -54,9 +54,12 @@ class Connector {
         if (!this.connection) {
             await this.connect();
         }
-        const query = "SELECT * FROM PRODUCT_COMPONENT_VERSION";
-        const [{ VERSION }] = await this.connection.execute(query);
-        return VERSION;
+        if (!this.version) {
+            const query = "SELECT * FROM PRODUCT_COMPONENT_VERSION";
+            const { rows } = await this.connection.execute(query);
+            this.version = rows[0]["VERSION"].split(".").shift();
+        }
+        return this.version;
     }
     setConfig(config) {
         this.config = config;
