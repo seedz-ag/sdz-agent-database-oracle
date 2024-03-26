@@ -6,5 +6,6 @@ export default class Connector implements ConnectorInterface {
     connect(): Promise<void>;
     close(): Promise<void>;
     execute(query: string): Promise<DatabaseRow[]>;
+    getVersion(): Promise<any>;
     private setConfig;
 }

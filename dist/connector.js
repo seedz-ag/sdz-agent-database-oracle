@@ -15,7 +15,7 @@ class Connector {
                 this.connection = await oracledb_1.default.getConnection({
                     user: this.config.username,
                     password: this.config.password,
-                    connectString: `${this.config.host}:${this.config.port}/${this.config.service}`
+                    connectString: `${this.config.host}:${this.config.port}/${this.config.service}`,
                 });
                 await this.connection.execute(`ALTER SESSION SET CURRENT_SCHEMA = ${this.config.schema}`);
             }
@@ -49,6 +49,14 @@ class Connector {
             console.log(e);
         }
         return resultSet;
+    }
+    async getVersion() {
+        if (!this.connection) {
+            await this.connect();
+        }
+        const query = "SELECT * FROM PRODUCT_COMPONENT_VERSION";
+        const [{ VERSION }] = await this.connection.execute(query);
+        return VERSION;
     }
     setConfig(config) {
         this.config = config;
