@@ -21,7 +21,7 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
             return this.getConnector().execute(statement);
         }
         let tmp = query.split(/from/gi);
-        tmp.splice(1, 0, ", ROWNUM AS OFFSET ");
+        tmp[0] = `${tmp[0]}, ROWNUM AS OFFSET`;
         tmp = tmp.join("FROM");
         const statement = [
             `SELECT * FROM (${tmp})`,
