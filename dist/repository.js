@@ -34,7 +34,7 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
     }
     async getVersion() {
         if (!this.version) {
-            this.version = await this.getConnector().getVersion();
+            this.version = +(await this.getConnector().getVersion()).split(".").at(0);
         }
         return this.version;
     }

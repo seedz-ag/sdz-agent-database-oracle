@@ -60,6 +60,7 @@ export default class Connector implements ConnectorInterface {
     }
     const query = "SELECT * FROM PRODUCT_COMPONENT_VERSION";
     const [{ VERSION }] = await this.connection.execute<DatabaseRow[]>(query);
+
     return VERSION;
   }
 

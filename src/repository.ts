@@ -1,7 +1,7 @@
 import { AbstractRepository } from "sdz-agent-types";
 
 export default class OracleRepository extends AbstractRepository {
-  private version: string;
+  private version: number;
 
   async count(query: string): Promise<any> {
     const total = (
@@ -41,7 +41,7 @@ export default class OracleRepository extends AbstractRepository {
 
   async getVersion() {
     if (!this.version) {
-      this.version = await this.getConnector().getVersion();
+      this.version = +(await this.getConnector().getVersion()).split(".").at(0);
     }
 
     return this.version;
