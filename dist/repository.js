@@ -21,12 +21,12 @@ class OracleRepository extends sdz_agent_types_1.AbstractRepository {
             return this.getConnector().execute(statement);
         }
         let tmp = query.split(/from/gi);
-        tmp[0] = `${tmp[0]}, ROWNUM AS OFFSET`;
+        tmp[0] = `${tmp[0]}, ROWNUM AS OFFSET `;
         tmp = tmp.join("FROM");
         const statement = [
             `SELECT * FROM (${tmp})`,
-            limit ? `WHERE OFFSET <= ${limit}` : null,
-            page && limit ? `AND OFFSET  > ${page * limit}` : null,
+            limit ? `WHERE OFFSET  > ${Math.max(page, 0) * limit}` : null,
+            limit ? `AND OFFSET <= ${Math.max(page + 1, 1) * limit}` : null,
         ]
             .filter((item) => !!item)
             .join(" ");
