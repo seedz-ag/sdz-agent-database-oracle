@@ -1,7 +1,4 @@
-import {
-  ConnectorInterface,
-  DatabaseRow,
-} from "sdz-agent-types";
+import { ConnectorInterface, DatabaseRow } from "sdz-agent-types";
 
 import oracledb, { Connection } from "oracledb";
 
@@ -17,14 +14,14 @@ export default class Connector implements ConnectorInterface {
     if (!this.connection) {
       try {
         oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
-        this.connection = await oracledb.getConnection(
-          { 
-            user: this.config.username,
-            password: this.config.password,
-            connectString: `${this.config.host}:${this.config.port}/${this.config.service}`
-          }
+        this.connection = await oracledb.getConnection({
+          user: this.config.username,
+          password: this.config.password,
+          connectString: `${this.config.host}:${this.config.port}/${this.config.service}`,
+        });
+        await this.connection.execute(
+          `ALTER SESSION SET CURRENT_SCHEMA = ${this.config.schema}`
         );
-         await this.connection.execute(`ALTER SESSION SET CURRENT_SCHEMA = ${this.config.schema}`);
       } catch (e) {
         console.log(e);
       }
@@ -55,6 +52,15 @@ export default class Connector implements ConnectorInterface {
       console.log(e);
     }
     return resultSet;
+  }
+
+  async getVersion() {
+    if (!this.connection) {
+      await this.connect();
+    }
+    const query = "SELECT * FROM PRODUCT_COMPONENT_VERSION";
+    const [{ VERSION }] = await this.connection.execute<DatabaseRow[]>(query);
+    return VERSION;
   }
 
   private setConfig(config: any): this {
