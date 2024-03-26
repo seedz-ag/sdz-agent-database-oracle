@@ -5,6 +5,7 @@ import oracledb, { Connection } from "oracledb";
 export default class Connector implements ConnectorInterface {
   private connection: Connection;
   private config: any;
+  private version: any;
 
   constructor(config: any) {
     this.setConfig(config);
@@ -58,10 +59,13 @@ export default class Connector implements ConnectorInterface {
     if (!this.connection) {
       await this.connect();
     }
-    const query = "SELECT * FROM PRODUCT_COMPONENT_VERSION";
-    const [{ VERSION }] = await this.connection.execute<DatabaseRow[]>(query);
+    if (!this.version) {
+      const query = "SELECT * FROM PRODUCT_COMPONENT_VERSION";
+      const { rows } = await this.connection.execute<DatabaseRow[]>(query);
+      this.version = rows[0]["VERSION"].split(".").shift();
+    }
 
-    return VERSION;
+    return this.version;
   }
 
   private setConfig(config: any): this {
